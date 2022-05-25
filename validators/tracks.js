@@ -36,8 +36,7 @@ const validatorCreateItem = [
 const validatorGetItem = [
     check("id")
     .exists()
-    .notEmpty()
-    .isMongoId(),
+    .notEmpty(),
     (req,res,next) => validateResult(req,res,next)
 ]
 

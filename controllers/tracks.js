@@ -12,9 +12,10 @@ const getItems = async (req, res) => {
     try {
         const user = req.user;
         console.log("User: " , user);
-        const data = await tracksModel.find({});
+        const data = await tracksModel.findAllData({});
         res.send({ data });
     } catch (error) {
+        console.log("Error: " , error);
         handleHttpError(res, 'ERROR_GET_ITEMS');
     }
 };
@@ -26,9 +27,10 @@ const getItem = async (req, res) => {
     try {
         req = matchedData(req);
         const { id } = req // Esto es igual a const{id} =req.params
-        const data = await tracksModel.findById(id);
+        const data = await tracksModel.findOneData(id);
         res.send({ data });
     } catch (error) {
+        console.log("error: " , error);
         handleHttpError(res, 'ERROR_GET_ITEM');
     }
 };

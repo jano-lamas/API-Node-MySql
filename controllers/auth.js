@@ -38,7 +38,7 @@ const loginCtrl = async (req, res) => {
     try {
         req = matchedData(req);
         // Primero buscamos el usuario en la BD y esto lo hacemos por email 
-        const user = await usersModel.findOne({ email: req.email })//.select('password name role email'); // indicamos con .select que aplique un filtro y si traiga password, etc
+        const user = await usersModel.findOne({ where: {email: req.email }})//.select('password name role email'); // indicamos con .select que aplique un filtro y si traiga password, etc
         // Vamos hacer una validacion si no existe el usuarios
         if (!user) {
             handleHttpError(res, "USER_NOT_EXIST", 404);

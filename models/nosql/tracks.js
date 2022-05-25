@@ -22,10 +22,10 @@ const TracksSchema = new mongoose.Schema(
             name: {
                 type: String,
             },
-            nickname:{
+            nickname: {
                 type: String,
             },
-            nationality:{
+            nationality: {
                 type: String,
             },
         },
@@ -37,7 +37,7 @@ const TracksSchema = new mongoose.Schema(
                 type: Number
             },
         },
-        mediaId:{
+        mediaId: {
             type: mongoose.Types.ObjectId,
         }
     },
@@ -46,5 +46,48 @@ const TracksSchema = new mongoose.Schema(
         versionKey: false,
     }
 );
-TracksSchema.plugin(mongooseDelete, {overrideMethods: "all"});
+
+/**
+ * Implementar metodo propio con relacion a storage
+ */
+
+TracksSchema.statics.findAllData = function () {
+    const joinData = this.aggregate([ // TODO Tracks
+        {
+            $lookup: {
+                from: "storages", // Hacemos relacion de tracks con storages -- tracks --> storages
+                localField: "mediaId", // Tracks.mediaId 
+                foreignField: "_id",  // Relacionamos con storages._id
+                as: "foto",  // este es nuestro alias audio
+            },
+        }, {
+            $unwind: "$foto"
+        }
+    ]);
+    return joinData
+};
+
+TracksSchema.statics.findOneData = function (id) {
+    const joinData = this.aggregate([ // TODO Tracks
+        {
+            $match: {
+                _id: mongoose.Types.ObjectId(id)
+            }
+        },
+        {
+            $lookup: {
+                from: "storages", // Hacemos relacion de tracks con storages -- tracks --> storages
+                localField: "mediaId", // Tracks.mediaId 
+                foreignField: "_id",  // Relacionamos con storages._id
+                as: "foto",  // este es nuestro alias audio
+            },
+        },
+        {
+            $unwind: "$foto"
+        }
+    ]);
+    return joinData
+};
+
+TracksSchema.plugin(mongooseDelete, { overrideMethods: "all" });
 module.exports = mongoose.model("tracks", TracksSchema);
