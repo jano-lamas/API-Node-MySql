@@ -4,7 +4,7 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
+    "test": "cross-env NODE_ENV=test jest",
     "start": "node ./app.js",
     "dev": "nodemon ./app.js"
   },
@@ -24,6 +24,20 @@
     "morgan-body": "^2.6.6",
     "multer": "^1.4.4",
     "mysql2": "^2.3.3",
-    "sequelize": "^6.19.2"
+    "sequelize": "^6.19.2",
+    "swagger-jsdoc": "^6.2.1",
+    "swagger-ui": "^4.11.1",
+    "swagger-ui-express": "^4.4.0"
+  },
+  "devDependencies": {
+    "cross-env": "^7.0.3",
+    "jest": "^28.1.0",
+    "supertest": "^6.2.3"
+  },
+  "jest": {
+    "testEnvironment": "node",
+    "coveragePathIgnorePatterns": [
+      "/node_modules"
+    ]
   }
 }
